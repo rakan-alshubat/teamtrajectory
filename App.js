@@ -1,49 +1,54 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, { PureComponent } from 'react'
+import { AppRegistry, StyleSheet, View, Dimensions } from 'react-native'
+import { GameLoop } from 'react-native-game-engine'
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+export default class App extends PureComponent {
+  constructor () {
+    super()
+    this.state = {
+      x: WIDTH / 2,
+      y: HEIGHT / 2
+    }
+  }
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
+  onUpdate ({ touches }) {
+    let move = touches.find(x => x.type === 'move')
+    if (move) {
+      this.setState({
+        x: this.state.x + move.delta.pageX,
+        y: this.state.y + move.delta.pageY
+      })
+      console.log(this.state)
+    }
+  }
+
+  render () {
+    const x = this.state.x - 20
+    const y = this.state.y - 20
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
+      <GameLoop style={styles.container} onUpdate={this.onUpdate.bind(this)}>
+        <View style={[styles.finger, { top: y, left: x }]} />
+      </GameLoop>
+    )
   }
 }
 
 const styles = StyleSheet.create({
+  finger: {
+    borderColor: '#CCC',
+    borderWidth: 4,
+    borderRadius: 40,
+    width: 40,
+    height: 40,
+    backgroundColor: 'black',
+    position: 'absolute'
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+    backgroundColor: '#FFF'
+  }
+})
+
+AppRegistry.registerComponent('App', () => App)
