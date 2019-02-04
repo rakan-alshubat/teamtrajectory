@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { AppRegistry, StyleSheet, View, Dimensions } from 'react-native'
 import { GameLoop } from 'react-native-game-engine'
+import Ship from './src/components/Ship'
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
@@ -28,12 +29,15 @@ export default class App extends PureComponent {
     const x = this.state.x - 20
     const y = this.state.y - 20
     return (
-      <GameLoop style={styles.container} onUpdate={this.onUpdate.bind(this)}>
-        <View style={[styles.finger, { top: y, left: x }]} />
-      </GameLoop>
+      <Ship />
     )
   }
 }
+/*
+<GameLoop style={styles.container} onUpdate={this.onUpdate.bind(this)}>
+<View style={[styles.finger, { top: y, left: x }]} />
+</GameLoop>
+*/
 
 const styles = StyleSheet.create({
   finger: {
