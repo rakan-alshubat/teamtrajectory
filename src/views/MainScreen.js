@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { View, StyleSheet, Image, Button, Alert } from 'react-native'
 
 export default class MainScreen extends React.Component {

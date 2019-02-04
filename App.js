@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dimensions } from 'react-native'
 import { StackNavigator } from 'react-navigation'
-import MainScreen from './MainScreen'
+import MainScreen from './src/views/MainScreen'
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
