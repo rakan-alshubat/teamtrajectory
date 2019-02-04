@@ -6,7 +6,7 @@ export default class MainScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.logoBox}>
-          <Image style={styles.logo} source={require('./assets/snack-icon.png')} />
+          <Image style={styles.logo} source={require('../assets/snack-icon.png')} />
         </View>
         <View style={styles.startButtonBox}>
           <Button
