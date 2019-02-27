@@ -10,6 +10,9 @@
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.3",
     "react-native-game-engine": "^0.10.1",
+    "react-native-scrolling-images": "^1.0.5",
+    "react-native-stopwatch-timer": "0.0.20",
+    "react-native-timer-countdown": "^2.1.1",
     "react-navigation": "^3.1.2"
   },
   "devDependencies": {

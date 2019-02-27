@@ -1,46 +1,33 @@
 import React from 'react'
-import { View, StyleSheet, Image, Button, Alert } from 'react-native'
+import { View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native'
 
 export default class MainScreen extends React.Component {
   render () {
     return (
       <View style={styles.container}>
+        <View style={styles.psycheBox}>
+          <Image style={styles.psycheLogo} source={require('../assets/psyche-logo.png')} />
+        </View>
         <View style={styles.logoBox}>
-          <Image style={styles.logo} source={require('../assets/snack-icon.png')} />
+          <Image style={styles.gameLogo} source={require('../assets/logo-placeholder.png')} />
         </View>
         <View style={styles.startButtonBox}>
-          <Button
-            title="Start"
-            color="#ffffff"
-            onPress={() => {
-              Alert.alert('Start the game!')
-            }}
-          />
+          <TouchableOpacity onPress={ () => { Alert.alert('Start the game') }}>
+            <Image style={styles.startButton} source={require('../assets/play-button.png')} />
+          </TouchableOpacity>
         </View>
         <View style={styles.upgradeButtonBox}>
-          <Button
-            title="Upgrade"
-            color="#ffffff"
-            onPress={() => {
-              Alert.alert('Go to the upgrade screen!!')
-            }}
-          />
+          <TouchableOpacity onPress={ () => { Alert.alert('Upgrade your ship!') }}>
+            <Image style={styles.upgradeButton} source={require('../assets/upgrades-button.png')} />
+          </TouchableOpacity>
         </View>
         <View style={styles.infoBox}>
-          <Button
-            title="i"
-            color="#ffffff"
-            onPress={() => {
-              Alert.alert('Info about the game and the app')
-            }}
-          />
-          <Button
-            title="Settings"
-            color="#ffffff"
-            onPress={() => {
-              Alert.alert('settings')
-            }}
-          />
+          <TouchableOpacity onPress={ () => { Alert.alert('info about the game') }}>
+            <Image style={styles.infoButton} source={require('../assets/info-icon.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={ () => { Alert.alert('mess with the settings') }}>
+            <Image style={styles.settingsButton} source={require('../assets/settings-icon.png')} />
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -51,32 +38,57 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  logoBox: {
-    flex: 5,
-    backgroundColor: '#3D9ECF',
-    alignItems: 'center',
-    justifyContent: 'flex-end'
+  psycheBox: {
+    flex: 2,
+    backgroundColor: '#11112c',
+    alignItems: 'flex-start'
   },
-  startButtonBox: {
-    flex: 1,
-    backgroundColor: '#3D9ECF',
+  logoBox: {
+    flex: 6,
+    backgroundColor: '#11112c',
     alignItems: 'center',
     justifyContent: 'center'
   },
+  startButtonBox: {
+    flex: 1,
+    backgroundColor: '#11112c',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
   upgradeButtonBox: {
-    flex: 2,
-    backgroundColor: '#3D9ECF',
+    flex: 1,
+    backgroundColor: '#11112c',
     alignItems: 'center'
   },
   infoBox: {
-    flex: 1,
-    backgroundColor: '#3D9ECF',
-    alignItems: 'center',
+    flex: 3,
+    backgroundColor: '#11112c',
+    alignItems: 'flex-start',
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-evenly'
   },
-  logo: {
-    height: 164,
-    width: 164
+  gameLogo: {
+    height: 247,
+    width: 247
+  },
+  psycheLogo: {
+    height: 60,
+    width: 130
+  },
+  startButton: {
+    height: 50,
+    width: 200
+  },
+  upgradeButton: {
+    height: 50,
+    width: 195
+  },
+  infoButton: {
+    height: 35,
+    width: 35
+  },
+  settingsButton: {
+    height: 35,
+    width: 35
   }
 })
