@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 
 class Obstacle extends PureComponent {
   render () {
-    const width = 100
-    const height = 50
+    const width = 30
+    const height = 30
     const x = this.props.position[0] - (width / 2)
     const y = this.props.position[1] - (height / 2)
     return (

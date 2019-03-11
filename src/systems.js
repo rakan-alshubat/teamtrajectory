@@ -48,4 +48,12 @@ const MoveShip = (entities, { touches }) => {
   return entities
 }
 
-export { MoveShip }
+const MoveObstacles = (entities) => {
+  const obstacle = entities['2']
+
+  obstacle.position = [obstacle.position[0], obstacle.position[1] - 1]
+
+  return entities
+}
+
+export { MoveShip, MoveObstacles }
