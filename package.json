@@ -11,7 +11,8 @@
     "react": "16.6.0-alpha.8af6728",
     "react-native": "^0.58.6",
     "react-native-cli": "^2.0.1",
-    "react-native-game-engine": "^0.10.1"
+    "react-native-game-engine": "^0.10.1",
+    "react-native-scrolling-images": "^1.0.5"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

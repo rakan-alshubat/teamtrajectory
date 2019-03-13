@@ -5,8 +5,12 @@ const { width: WIDTH } = Dimensions.get('window')
 let isPressed = false
 let lastPosition = 0
 
+const MoveBackground = (entities) => {
+  return entities
+}
+
 const MoveShip = (entities, { touches }) => {
-  const ship = entities['1']
+  const ship = entities['2']
 
   const moveTouch = touches.find(x => x.type === 'move')
   const startTouch = touches.find(x => x.type === 'start')
@@ -49,11 +53,11 @@ const MoveShip = (entities, { touches }) => {
 }
 
 const MoveObstacles = (entities) => {
-  const obstacle = entities['2']
+  const obstacle = entities['3']
 
   obstacle.position = [obstacle.position[0], obstacle.position[1] - 1]
 
   return entities
 }
 
-export { MoveShip, MoveObstacles }
+export { MoveBackground, MoveShip, MoveObstacles }

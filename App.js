@@ -3,13 +3,15 @@ import { Obstacle } from './src/components/Obstacle'
 import { AppRegistry, StyleSheet, Dimensions } from 'react-native'
 import { GameEngine } from 'react-native-game-engine'
 import { Ship } from './src/components/Ship'
-import { MoveObstacles, MoveShip } from './src/systems'
+import { MoveBackground, MoveShip, MoveObstacles } from './src/systems'
+import ScrollingBackgroundImage from './src/views/ScrollingBackgroundImage'
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
 const entities = {
-  1: { position: [200, 100], renderer: <Ship /> },
-  2: { position: [Math.random() * (WIDTH - 30), HEIGHT - 30], renderer: <Obstacle /> }
+  1: { renderer: <ScrollingBackgroundImage /> },
+  2: { position: [200, 130], renderer: <Ship /> },
+  3: { position: [Math.random() * (WIDTH - 30), HEIGHT - 30], renderer: <Obstacle /> }
 }
 
 export default class App extends PureComponent {
@@ -17,7 +19,7 @@ export default class App extends PureComponent {
     return (
       <GameEngine
         style={styles.container}
-        systems={[MoveShip, MoveObstacles]}
+        systems={[MoveBackground, MoveShip, MoveObstacles]}
         entities={entities}>
       </GameEngine>
     )

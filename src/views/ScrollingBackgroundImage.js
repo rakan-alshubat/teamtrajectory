@@ -8,9 +8,9 @@ export default class ScrollingBackgroundImage extends React.Component {
       <View style={styles.container}>
         <ScrollingBackground
           style={styles.scrollingBackgroundStyle}
-          speed={0.2}
+          speed={0.7}
           direction={'down'}
-          images={[require('../assets/backgrounds/background-stars-1.png'), require('../assets/backgrounds/background-stars-2.png')]}
+          images={[require('../assets/background-stars-1.png'), require('../assets/background-stars-2.png')]}
         />
       </View>
     )

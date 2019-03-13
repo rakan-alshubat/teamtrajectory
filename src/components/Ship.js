@@ -1,28 +1,21 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View } from 'react-native'
+import { Image } from 'react-native'
 
 class Ship extends PureComponent {
   render () {
-    const width = 100
-    const height = 50
+    const width = 50
+    const height = 75
     const x = this.props.position[0] - (width / 2)
     const y = this.props.position[1] - (height / 2)
     return (
-      <View style={[styles.ship, { width, height, left: x, bottom: y }]} />
+      <Image
+        style={{ height: height, width: width, left: x, bottom: y }}
+        source={require('../assets/lvl3-pink.png')}
+      />
     )
   }
 }
-
-const styles = StyleSheet.create({
-  ship: {
-    position: 'absolute',
-    backgroundColor: 'grey',
-    borderRadius: 5,
-    borderWidth: 3,
-    borderColor: 'black'
-  }
-})
 
 Ship.propTypes = {
   position: PropTypes.node
