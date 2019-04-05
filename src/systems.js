@@ -135,7 +135,7 @@ const Tick = (entities, { touches }) => {
     else if (type === 10 && numStyleCoins === 0) type = 5
     else type = 1
 
-    entities['3'].collectables.push({ type, position: [Math.random() * (WIDTH + 30), HEIGHT + 100], speed: 0.5, delete: false })
+    entities['3'].collectables.push({ type, position: [Math.random() * (WIDTH + 30), HEIGHT + 100], speed: 0.25, delete: false })
   }
   // Spawn obstacles
   if (entities['3'].obstacles.length < 3 && lastSpawnFactor !== spawnFactor && spawnFactor < 0.4) {
