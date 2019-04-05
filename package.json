@@ -12,7 +12,9 @@
     "react-native": "^0.58.6",
     "react-native-cli": "^2.0.1",
     "react-native-game-engine": "^0.10.1",
-    "react-native-scrolling-images": "^1.0.5"
+    "react-native-gesture-handler": "^1.1.0",
+    "react-native-scrolling-images": "^1.0.5",
+    "react-navigation": "^3.6.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

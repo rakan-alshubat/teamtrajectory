@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native'
 
-const { width: WIDTH } = Dimensions.get('window')
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
 let isPressed = false
 let lastPosition = 0
@@ -56,6 +56,10 @@ const MoveObstacles = (entities) => {
   const obstacle = entities['3']
 
   obstacle.position = [obstacle.position[0], obstacle.position[1] - 1]
+
+  if (obstacle.position[1] < HEIGHT - HEIGHT - 30) {
+    obstacle.position = [Math.random() * (WIDTH - 30), HEIGHT + 100]
+  }
 
   return entities
 }

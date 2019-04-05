@@ -1,36 +1,29 @@
-import React, { PureComponent } from 'react'
-import { Obstacle } from './src/components/Obstacle'
-import { AppRegistry, StyleSheet, Dimensions } from 'react-native'
-import { GameEngine } from 'react-native-game-engine'
-import { Ship } from './src/components/Ship'
-import { MoveBackground, MoveShip, MoveObstacles } from './src/systems'
-import ScrollingBackgroundImage from './src/views/ScrollingBackgroundImage'
+import React, { Component } from 'react'
+import { AppRegistry } from 'react-native'
+import { createStackNavigator, createAppContainer } from 'react-navigation'
+import MainScreen from './src/views/MainScreen'
+import UpScreen from './src/views/UpScreen'
+import EndScreen from './src/views/EndScreen';
 
-const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
+const RootStack = createStackNavigator(
+  {
+    Home: MainScreen,
+    Upgrades: UpScreen,
+    End: EndScreen
+  },
+  {
+    initialRouteName: 'Home'
+  }
+)
 
-const entities = {
-  1: { renderer: <ScrollingBackgroundImage /> },
-  2: { position: [200, 130], renderer: <Ship /> },
-  3: { position: [Math.random() * (WIDTH - 30), HEIGHT - 30], renderer: <Obstacle /> }
-}
+const AppContainer = createAppContainer(RootStack)
 
-export default class App extends PureComponent {
+export default class App extends Component {
   render () {
     return (
-      <GameEngine
-        style={styles.container}
-        systems={[MoveBackground, MoveShip, MoveObstacles]}
-        entities={entities}>
-      </GameEngine>
+      <AppContainer/>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF'
-  }
-})
 
 AppRegistry.registerComponent('App', () => App)
