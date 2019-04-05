@@ -238,10 +238,6 @@ const Tick = (entities, { touches }) => {
 
   lastSpawnFactor = spawnFactor
 
-  if (obstacle.position[1] < HEIGHT - HEIGHT - 30) {
-    obstacle.position = [Math.random() * (WIDTH - 30), HEIGHT + 100]
-  }
-
   return entities
 }
 
