@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, StyleSheet, Image, TouchableOpacity, Alert, ImageBackground, Dimensions, Linking } from 'react-native'
+import PropTypes from 'prop-types'
+import { View, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, Linking } from 'react-native'
 import InfoModal from './InfoModal'
-import SettingsModal from './SettingsModal'
-import PauseModal from './PauseModal'
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
@@ -23,7 +22,7 @@ export default class MainScreen extends React.Component {
           <Image style={styles.gameLogo} source={require('../assets/gameLogo.png')} />
         </View>
         <View style={styles.playButtonBox}>
-          <TouchableOpacity onPress={ () => this.props.navigation.navigate('End')}>
+          <TouchableOpacity onPress={ () => this.props.navigation.navigate('Game')}>
             <Image style={styles.playButton} source={require('../assets/play-button.png')} />
           </TouchableOpacity>
         </View>
@@ -91,3 +90,7 @@ const styles = StyleSheet.create({
     width: 175
   }
 })
+
+MainScreen.propTypes = {
+  navigation: PropTypes.object
+}

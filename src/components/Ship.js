@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Animated, Easing, Image } from 'react-native'
+import { Animated, Easing } from 'react-native'
 
 let lastXPosition = null
 let lastMotion = 'still'

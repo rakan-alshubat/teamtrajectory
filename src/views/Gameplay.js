@@ -13,6 +13,10 @@ const entities = {
 }
 
 export default class Gameplay extends PureComponent {
+  static navigationOptions = {
+    header: null
+  }
+
   render () {
     return (
       <GameEngine
