@@ -238,6 +238,11 @@ const Tick = (entities, { touches }) => {
 
   lastSpawnFactor = spawnFactor
 
+  // Fuel
+  const fuel = entities['4']
+  if (fuel.fuelAmount > 1) fuel.fuelAmount -= 0.1
+  else fuel.fuelAmount = 80
+
   return entities
 }
 
