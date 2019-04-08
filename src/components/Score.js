@@ -1,24 +1,22 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, Image } from 'react-native'
 
 export default class Score extends Component {
   render () {
-    // const score = 50
+    let coins = String(this.props.coins)
+    coins = coins.length === 4 ? coins : coins.length === 3 ? '0' + coins : coins.length === 2 ? '00' + coins : '000' + coins
+
     return (
       <View style={styles.score}>
         <Image
-          style={{
-            height: 12,
-            width: 12
-          }}
-          source={require('../assets/coin.png')}
+          style={{ height: 18, width: 18 }}
+          source={require('../assets/collectable-1.png')}
         />
-        <Text
-          style={{
-            color: '#f7a01d'
-          }}
-        >
-          0050
+        <Text style={{ color: '#f7a01d' }}>
+          {
+            coins
+          }
         </Text>
       </View>
     )
@@ -29,12 +27,18 @@ const styles = StyleSheet.create({
   score: {
     position: 'absolute',
     color: '#f7a01d',
-    top: 115,
-    right: 266,
+    top: '10.47%',
+    left: '16.27%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: '#0a0c21',
+    paddingRight: 5
   }
 })
+
+Score.propTypes = {
+  coins: PropTypes.number
+}
 
 export { Score }

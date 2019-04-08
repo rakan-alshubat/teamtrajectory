@@ -16,6 +16,20 @@ const thrusterLevels = {
   4: 0.2,
   5: 0.24
 }
+const thrusterEffLevels = {
+  1: 2.2,
+  2: 2,
+  3: 1.7,
+  4: 1.5,
+  5: 1
+}
+const solarPanelsLevels = {
+  1: 15000,
+  2: 14000,
+  3: 12000,
+  4: 11000,
+  5: 8000
+}
 const fuelLevels = {
   1: 25,
   2: 50,
@@ -35,10 +49,18 @@ const collectableSpeedDecrease = 0.75
 
 let thrusterLevel = 1
 Storage.getThrusterControlLevel().then(level => { thrusterLevel = Number(level) })
+let thrusterEffLevel = 1
+Storage.getThrusterEfficiencyLevel().then(level => { thrusterLevel = Number(level) })
+let solarPanelsLevel = 1
+Storage.getSolarPanelsLevel().then(level => { solarPanelsLevel = Number(level) })
 let fuelLevel = 1
 Storage.getFuelLevel().then(level => { fuelLevel = Number(level) })
 let coinBoostLevel = 1
 Storage.getCoinBoostLevel().then(level => { coinBoostLevel = Number(level) })
+let lastCoins = 0
+Storage.getCoins().then(coins => { lastCoins = Number(coins) })
+let highScore = 0
+Storage.getHighScore().then(score => { highScore = Number(score) })
 
 let lastSpawnFactor = 1
 let spawnFactor = 1
@@ -48,32 +70,91 @@ let velocity = 2
 
 let distanceTraveled = fuelLevels[fuelLevel]
 let speed = thrusterLevels[thrusterLevel]
+//speed = 0.24
 let coins = 0
 let coinBoostTimeout = null
 let speedChangeTimeout = null
 let isCoinBoost = false
+let gameOver = '0'
+
+let solarPanelsInterval = null
 
 const Tick = (entities, { touches }) => {
+  //Storage.setHighScore('0')
   const ship = entities['2']
-  if (ship.paused) return entities
+
+  if (ship.paused || gameOver === '1') {
+    Storage.getGameOver().then(val => { gameOver = val })
+    return entities
+  }
+
   // End game: reached end
   if (distanceTraveled >= maxDistance) {
-    ship.paused = true
     entities['3'].obstacles.map(obs => {
       Animated.timing(obs.spin).stop()
+    })
+    Storage.setCoins(String(lastCoins + coins)).then(x => {
+      if (distanceTraveled > highScore) {
+        highScore = distanceTraveled
+        Storage.setHighScore(String(Math.round(distanceTraveled))).then(entities['1'].navigation.navigate('End'))
+      } else {
+        entities['1'].navigation.navigate('End')
+      }
+      distanceTraveled = fuelLevels[fuelLevel]
+      ship.position = [200, 160]
+      velocity = 2
     })
     return entities
   }
   // End game: velocity 0
   if (velocity <= 0) {
-    ship.paused = true
+    /*
     entities['3'].obstacles.map(obs => {
       Animated.timing(obs.spin).stop()
     })
-    return entities
+    */
+    console.log('gameover: ', gameOver)
+    gameOver = '1'
+    Storage.setGameOver('1').then(x => {
+      console.log('set game over to 1')
+      Storage.setCoins(String(lastCoins + coins)).then(x => {
+        console.log('score: ', distanceTraveled)
+        console.log('highscore: ', highScore)
+        Storage.setLastScore(String(Math.round(distanceTraveled))).then(x => {
+          if (distanceTraveled > highScore) {
+            highScore = distanceTraveled
+            Storage.setHighScore(String(Math.round(distanceTraveled))).then(entities['1'].navigation.navigate('End'))
+          } else {
+            entities['1'].navigation.navigate('End')
+          }
+          solarPanelsInterval = null
+          coins = 0
+          distanceTraveled = fuelLevels[fuelLevel]
+          ship.position = [200, 160]
+          velocity = 2
+          entities['3'].collectables = []
+          entities['3'].obstacles = []
+          entities['5'].fuelAmount = 95
+          entities['4'].battery = 80
+          //entities['7'].reset = true
+          return entities
+        }).catch(err => {
+          console.log(err)
+          return entities
+        })
+      }).catch(err => {
+        console.log(err)
+        return entities
+      })
+    }).catch(err => {
+      console.log(err)
+      return entities
+    })
   }
   // Update distance traveled
   distanceTraveled += (velocity / 18)
+  // Update coins
+  entities['6'].coins = lastCoins + coins
 
   const shipPositionOld = [ship.position[0], ship.position[1]]
   const moveTouch = touches.find(x => x.type === 'move')
@@ -112,6 +193,25 @@ const Tick = (entities, { touches }) => {
         ship.position = [ship.position[0] - (speed * (WIDTH / 18)), ship.position[1]] // ((ship.upgrades.thrusterControl + 1) / 2)
       }
     }
+  }
+
+  if (!solarPanelsInterval) {
+    solarPanelsInterval = setInterval(() => {
+      if (entities['4'].battery < 80) {
+        entities['4'].battery += 10
+        if (entities['4'].battery > 80) {
+          entities['4'].battery = 80
+        }
+      }
+    }, solarPanelsLevels[solarPanelsLevel])
+  }
+  if (entities['4'].battery <= 0) {
+    ship.position = shipPositionOld
+  }
+  if (ship.position[0] !== shipPositionOld[0]) {
+    //console.log(entities['4'].battery)
+    entities['4'].battery -= 80 * (Math.abs(shipPositionOld[0] - ship.position[0]) / WIDTH) * thrusterEffLevels[thrusterEffLevel]
+    if (entities['4'].battery < 0) entities['4'].battery = 0
   }
 
   /* Spawn Entities */
@@ -219,6 +319,7 @@ const Tick = (entities, { touches }) => {
       const matchV = Math.abs((ship.position[1] + (ship.dimensions[1] / 2)) - (obs.position[1] + (dimensions[1] / 2))) < (ship.dimensions[1] / 2)
       if (matchH && matchV) {
         obs.delete = true
+        entities['5'].fuelAmount -= 47
         velocity -= 1
       }
       // Floor collisions

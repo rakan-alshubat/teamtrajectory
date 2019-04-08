@@ -1,34 +1,14 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { Image, StyleSheet, View } from 'react-native'
 
 export default class Battery extends PureComponent {
-  constructor () {
-    super()
-    this.state = {
-      batteryBars: 80
-    }
-  }
-
-  componentDidMount () {
-    this.myInterval = setInterval(() => {
-      if (this.state.batteryBars > 0) {
-        this.setState({
-          batteryBars: this.state.batteryBars - 1
-        })
-      } else {
-        this.setState({
-          batteryBars: 0
-        })
-      }
-    }, 1000)
-  }
-
   render () {
-    const width = 21
-    const height = 55
-    const x = 30
-    const y = 840
-    // const batteryBars = this.state.batteryBars
+    const battery = this.props.battery
+
+    const x = 0
+    const y = 0
+
     const one = (
       <Image
         style={{ height: 4, width: 16, left: x + 2.5, bottom: y + 8 }}
@@ -79,39 +59,35 @@ export default class Battery extends PureComponent {
     )
 
     let arr
-    if (this.state.batteryBars > 70) {
+    if (battery > 70) {
       arr = [one, two, three, four, five, six, seven, eight]
-    } else if (this.state.batteryBars > 60) {
+    } else if (battery > 60) {
       arr = [one, two, three, four, five, six, seven]
-    } else if (this.state.batteryBars > 50) {
+    } else if (battery > 50) {
       arr = [one, two, three, four, five, six]
-    } else if (this.state.batteryBars > 40) {
+    } else if (battery > 40) {
       arr = [one, two, three, four, five]
-    } else if (this.state.batteryBars > 30) {
+    } else if (battery > 30) {
       arr = [one, two, three, four]
-    } else if (this.state.batteryBars > 20) {
+    } else if (battery > 20) {
       arr = [one, two, three]
-    } else if (this.state.batteryBars > 10) {
+    } else if (battery > 10) {
       arr = [one, two]
-    } else if (this.state.batteryBars > 0) {
+    } else if (battery > 0) {
       arr = [one]
     }
 
     return (
-      <React.Fragment>
+      <View style={{ position: 'absolute', top: '6.53%', left: '7.33%' }}>
         <Image
-          style={{ height: height, width: width, left: x, bottom: y + 1.5 }}
+          style={{ height: 57, width: 21.1 }}
           source={require('../assets/BatteryFrame.png')}
         />
-
-        {arr}
-        <View
-          style={[
-            styles.container,
-            { width: 80, height: 20, left: 30, bottom: 700 }
-          ]}
-        />
-      </React.Fragment>
+        {
+          arr
+        }
+        <View style={{ position: 'absolute', width: 80, height: 20 }} />
+      </View>
     )
   }
 }
@@ -130,5 +106,9 @@ const styles = StyleSheet.create({
     fontSize: 20
   }
 })
+
+Battery.propTypes = {
+  battery: PropTypes.number
+}
 
 export { Battery }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import PropTypes from 'prop-types'
 
 export default class Timer extends Component {
   constructor (props) {
@@ -28,13 +29,39 @@ export default class Timer extends Component {
   }
 
   render () {
+    /*
+    if (this.props.reset) {
+      console.log('resetting')
+      this.props.reset = false
+      this.setState({
+        months: [
+          'Jan',
+          'Feb',
+          ' Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          ' Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+          'Game Over'
+        ],
+        year: 2022,
+        month: 8,
+        dot: '/',
+        displayTimer: true
+      })
+    }
     const { year, month, dot } = this.state
     var m = this.state.months[month - 1]
-    const width = 110
-    const height = 50
+    const width = 68
+    const height = 19
     return (
       <View
-        style={[styles.container, { width, height, left: 38, bottom: 670 }]}
+        style={[styles.container, { width, height, top: '7.27%', left: '16.27%' }]}
       >
         <Text style={styles.instructions}>
           {m}
@@ -43,6 +70,10 @@ export default class Timer extends Component {
         </Text>
         <Text style={styles.gameOver} />
       </View>
+    )
+    */
+    return (
+      <View />
     )
   }
 
@@ -72,7 +103,8 @@ export default class Timer extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute'
+    position: 'absolute',
+    backgroundColor: '#0a0c21'
   },
   gameOver: {
     fontSize: 20,
@@ -81,8 +113,12 @@ const styles = StyleSheet.create({
   instructions: {
     textAlign: 'center',
     color: '#FFF',
-    fontSize: 15
+    fontSize: 13
   }
 })
+
+Timer.propTypes = {
+  reset: PropTypes.bool
+}
 
 export { Timer }

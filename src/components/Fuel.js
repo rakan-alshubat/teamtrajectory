@@ -8,19 +8,19 @@ export default class Fuel extends Component {
     // const height = 20
     // bot = 145
     return (
-      <React.Fragment>
+      <View style={{ position: 'absolute', height: 12.4, width: 101, top: '3.69%', left: '7.47%' }}>
         <Image
-          style={{ height: 12, width: 100, left: 30, bottom: 840 }}
+          style={{ height: '100%', width: '100%' }}
           source={require('../assets/fuelBar.png')}
         />
 
         <View
           style={[
             styles.square,
-            { width: width, height: 7.5, left: 33, bottom: 850 }
+            { position: 'absolute', width, height: 6.7, top: 2.5, left: 3 }
           ]}
         />
-      </React.Fragment>
+      </View>
     )
   }
 }

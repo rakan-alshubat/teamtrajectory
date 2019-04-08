@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, Animated } from 'react-native'
 import { GameEngine } from 'react-native-game-engine'
 import { Ship } from '../components/Ship'
@@ -11,13 +12,13 @@ import { Tick } from '../systems'
 import ScrollingBackgroundImage from './ScrollingBackgroundImage'
 
 const entities = {
-  1: { renderer: <ScrollingBackgroundImage /> },
+  1: { navigation: {}, renderer: <ScrollingBackgroundImage /> },
   2: { paused: false, dimensions: [32, 84], position: [200, 160], rotate: new Animated.Value(0.5), renderer: <Ship /> },
   3: { update: true, obstacles: [], collectables: [], renderer: <Obstacle /> },
-  4: { renderer: <Battery /> },
-  5: { fuelAmount: 80, renderer: <Fuel /> },
-  6: { renderer: <Score /> },
-  7: { renderer: <Timer /> }
+  4: { battery: 80, renderer: <Battery /> },
+  5: { fuelAmount: 95, renderer: <Fuel /> },
+  6: { coins: 0, renderer: <Score /> },
+  7: { reset: false, renderer: <Timer /> }
 }
 
 export default class Gameplay extends PureComponent {
@@ -26,6 +27,8 @@ export default class Gameplay extends PureComponent {
   }
 
   render () {
+    entities['1'].navigation = this.props.navigation
+
     return (
       <GameEngine
         style={styles.container}
@@ -42,3 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF'
   }
 })
+
+Gameplay.propTypes = {
+  navigation: PropTypes.object
+}

@@ -106,6 +106,36 @@ class Storage {
       console.log(err)
     }
   }
+  static async setLastScore (score) {
+    try {
+      await AsyncStorage.setItem('lastScore', score)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  static async getLastScore () {
+    try {
+      const lastScore = await AsyncStorage.getItem('lastScore') || '0'
+      return lastScore
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  static async setLastCoins (coins) {
+    try {
+      await AsyncStorage.setItem('lastCoins', coins)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  static async getLastCoins () {
+    try {
+      const coins = await AsyncStorage.getItem('lastCoins') || '0'
+      return coins
+    } catch (err) {
+      console.log(err)
+    }
+  }
   static async setHighScore (score) {
     try {
       await AsyncStorage.setItem('highScore', score)
@@ -132,6 +162,21 @@ class Storage {
     try {
       const coins = await AsyncStorage.getItem('coins') || '0'
       return coins
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  static async setGameOver (gameOver) {
+    try {
+      await AsyncStorage.setItem('gameOver', gameOver)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  static async getGameOver () {
+    try {
+      const gameOver = await AsyncStorage.getItem('gameOver') || '0'
+      return gameOver
     } catch (err) {
       console.log(err)
     }

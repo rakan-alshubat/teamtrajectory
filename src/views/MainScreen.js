@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, StyleSheet, Image, TouchableOpacity, ImageBackground, Linking } from 'react-native'
 import InfoModal from './InfoModal'
-import SettingsModal from "./SettingsModal";
+import SettingsModal from './SettingsModal'
+import { Storage } from '../storage'
 
 export default class MainScreen extends React.Component {
   static navigationOptions = {
@@ -10,6 +11,7 @@ export default class MainScreen extends React.Component {
   }
 
   render () {
+    Storage.setGameOver('0')
     return (
       <ImageBackground source={require('../assets/mainScreenBackground.png')} style={{ width: '100%', height: '100%' }}>
         <View style={styles.psycheBox}>
