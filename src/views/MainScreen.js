@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, Linking } from 'react-native'
+import { View, StyleSheet, Image, TouchableOpacity, ImageBackground, Linking } from 'react-native'
 import InfoModal from './InfoModal'
-
-const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
+import SettingsModal from "./SettingsModal";
 
 export default class MainScreen extends React.Component {
   static navigationOptions = {
@@ -35,7 +34,7 @@ export default class MainScreen extends React.Component {
           <InfoModal />
         </View>
         <View style={styles.settingsBox}>
-          <InfoModal />
+          <SettingsModal />
         </View>
       </ImageBackground>
     )
@@ -44,33 +43,33 @@ export default class MainScreen extends React.Component {
 
 const styles = StyleSheet.create({
   psycheBox: {
-    top: HEIGHT * 0.043,
-    right: WIDTH * 0.80,
+    top: '4.3%',
+    right: '80%',
     position: 'absolute'
   },
   logoBox: {
-    top: HEIGHT * 0.22,
-    right: WIDTH * 0.15,
+    top: '22%',
+    right: '15%',
     position: 'absolute'
   },
   playButtonBox: {
-    top: HEIGHT * 0.58,
-    right: WIDTH * 0.292,
+    top: '58%',
+    right: '29.2%',
     position: 'absolute'
   },
   upgradeButtonBox: {
-    top: HEIGHT * 0.69,
-    left: WIDTH * 0.292,
+    top: '70%',
+    left: '29.2%',
     position: 'absolute'
   },
   infoBox: {
-    top: HEIGHT * 0.90,
-    right: WIDTH * 0.85,
+    top: '90%',
+    right: '85%',
     position: 'absolute'
   },
   settingsBox: {
-    top: HEIGHT * 0.90,
-    right: WIDTH * 0.05,
+    top: '90%',
+    right: '5%',
     position: 'absolute'
   },
   gameLogo: {

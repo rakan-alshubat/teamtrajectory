@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import FuelTankModal from './FuelTankModal'
 import ThrusterControlModal from './ThrusterControlModal'
 import ThrusterEfficiencyModal from './ThrusterEfficiencyModal'
 import SolarPanelsModal from './SolarPanelsModal'
 import BatteryCapacityModal from './BatteryCapacityModal'
 import CoinBoostModal from './CoinBoostModal'
+import Storage from '../storage'
 
 export default class UpScreen extends Component {
   static navigationOptions = {
@@ -25,19 +26,30 @@ export default class UpScreen extends Component {
   }
 
   render () {
-    const level1 = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade1.png')}/>
-    const level2 = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade2.png')}/>
-    const level3 = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade3.png')}/>
-
     let upgradeLevel
-    let x1 = this.state.x
+    let upgradeCost
+    let upgradeCoin
+    let upgradable
 
-    if (x1 === 1) {
-      upgradeLevel = level1
-    } else if (x1 === 2) {
-      upgradeLevel = level2
+    if (this.state.x === 1) {
+      upgradeLevel = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade1.png')}/>
+      upgradeCost = <Text style={styles.shipCostText}> 0600 </Text>
+      upgradeCoin = <Image style={styles.shipCostCoin} source={require('../assets/coin.png')}/>
+      upgradable = <TouchableOpacity style={{ width: '36.2667%', height: '55%', top: '15%', left: '55%' }} onPress={ () => this.press() }>
+        <Image style={{ width: '100%', height: '100%' }} source={require('../assets/upgrade-ship-button.png')}/>
+      </TouchableOpacity>
+    } else if (this.state.x === 2) {
+      upgradeLevel = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade2.png')}/>
+      upgradeCost = <Text style={styles.shipCostText}> 1750 </Text>
+      upgradeCoin = <Image style={styles.shipCostCoin} source={require('../assets/coin.png')}/>
+      upgradable = <TouchableOpacity style={{ width: '36.2667%', height: '55%', top: '15%', left: '55%' }} onPress={ () => this.press() }>
+        <Image style={{ width: '100%', height: '100%' }} source={require('../assets/upgrade-ship-button.png')}/>
+      </TouchableOpacity>
     } else {
-      upgradeLevel = level3
+      upgradeLevel = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade3.png')}/>
+      upgradable = <TouchableWithoutFeedback>
+        <Image style={{ width: '36.2667%', height: '55%', top: '15%', left: '55%', backgroundColor: 'gray', opacity: 0.2, borderRadius: 20 }} source={require('../assets/upgrade-ship-button.png')}/>
+      </TouchableWithoutFeedback>
     }
 
     return (
@@ -47,9 +59,7 @@ export default class UpScreen extends Component {
         <View style={{ backgroundColor: '#ffffff', width: '100%', height: '6.7734%', marginTop: '0%' }}/>
 
         <View style={{ backgroundColor: '#10102c', width: '100%', height: '14.5197%', marginTop: '0%' }}>
-          <TouchableOpacity style={{ width: '36.2667%', height: '55%', top: '15%', left: '55%' }} onPress={ () => this.press() }>
-            <Image style={{ width: '100%', height: '100%' }} source={require('../assets/upgrade-ship-button.png')}/>
-          </TouchableOpacity>
+          {upgradable}
         </View>
 
         <View style={{ backgroundColor: '#301e41', width: '100%', height: '13.1178161%', marginTop: '0%' }}>
@@ -86,9 +96,8 @@ export default class UpScreen extends Component {
 
         <Image style={styles.upgradeTitle} source={require('../assets/upgrade-title.png')}/>
 
-        <Image style={styles.shipCostCoin} source={require('../assets/coin.png')}/>
-
-        <Text style={styles.shipCostText}> 5000 </Text>
+        {upgradeCoin}
+        {upgradeCost}
 
         <View style={{ position: 'absolute', width: '40%', height: '13%', top: '8%', right: '50%' }}>
           {upgradeLevel}

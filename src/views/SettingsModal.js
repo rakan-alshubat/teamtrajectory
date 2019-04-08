@@ -25,7 +25,7 @@ class SettingsModal extends Component {
       return (
         <Fragment>
           <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={this.state.modalVisible}
             onRequestClose={this.closeModal}
@@ -38,16 +38,23 @@ class SettingsModal extends Component {
               <View style={styles.overlay} />
               <TouchableWithoutFeedback>
                 <View style={styles.modalContainer}>
-                  <Text style={styles.description}>
-                    {[
-                      'A native modal is easy enough to implement but the risk is that ',
-                      "the user can feel trapped if they can't close the Modal. \n\n",
-                      'The only way they can is by clicking on:'
-                    ]}
-                  </Text>
-                  <TouchableOpacity onPress = { () => { Alert.alert('Hey') }}>
-                    <Text>Button</Text>
-                  </TouchableOpacity>
+
+                  <View style={styles.textBox}>
+                    <Text style={styles.description}>
+                      {[
+                        'Team Trajectory!\n',
+                        'Development Team:\n'
+                      ]}
+                    </Text>
+                    <Text style={styles.description}>
+                      {[
+                        'Fatima Alburaikan\t\t\t\t Yazeed Almazroa\n',
+                        'Rakan Alshubat\t\t\t\t Saeed Alteneiji\n',
+                        'Tristan Kimball\t\t\t\t Rudy Trigueros\n'
+                      ]}
+                    </Text>
+                  </View>
+
                 </View>
               </TouchableWithoutFeedback>
             </TouchableOpacity>
@@ -65,19 +72,25 @@ export default SettingsModal
 
 const styles = StyleSheet.create({
   modalContainer: {
+    backgroundColor: '#301e41',
+    borderRadius: 12,
+    position: 'absolute',
+    height: HEIGHT * 0.30,
+    width: WIDTH * 0.80,
+    top: HEIGHT * 0.25,
+    right: WIDTH * 0.09
+  },
+  textBox: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#DCDCDC',
-    borderRadius: 4,
-    borderColor: '#C0C0C0',
-    borderWidth: 2,
     position: 'absolute',
-    top: HEIGHT * 0.50,
-    right: WIDTH * 0.40
+    width: 250,
+    top: HEIGHT * 0.125,
+    right: WIDTH * 0.1
   },
   description: {
-    padding: 20,
-    fontSize: 18
+    fontSize: 12,
+    color: '#ffffff'
   },
   exitTouch: {
     width: '100%',
@@ -86,7 +99,7 @@ const styles = StyleSheet.create({
   overlay: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#FFF',
+    backgroundColor: '#c0c0c0',
     opacity: 0.35
   },
   settingsButton: {

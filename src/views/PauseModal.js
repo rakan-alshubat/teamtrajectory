@@ -21,7 +21,7 @@ class PauseModal extends Component {
       return (
         <Fragment>
           <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={this.state.modalVisible}
             onRequestClose={this.closeModal}
