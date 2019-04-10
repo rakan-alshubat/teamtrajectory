@@ -9,13 +9,13 @@ export default class Timer extends Component {
       months: [
         'Jan',
         'Feb',
-        ' Mar',
+        'Mar',
         'Apr',
         'May',
         'Jun',
         'Jul',
         'Aug',
-        ' Sep',
+        'Sep',
         'Oct',
         'Nov',
         'Dec',
@@ -29,32 +29,6 @@ export default class Timer extends Component {
   }
 
   render () {
-    /*
-    if (this.props.reset) {
-      console.log('resetting')
-      this.props.reset = false
-      this.setState({
-        months: [
-          'Jan',
-          'Feb',
-          ' Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          ' Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-          'Game Over'
-        ],
-        year: 2022,
-        month: 8,
-        dot: '/',
-        displayTimer: true
-      })
-    }
     const { year, month, dot } = this.state
     var m = this.state.months[month - 1]
     const width = 68
@@ -71,10 +45,6 @@ export default class Timer extends Component {
         <Text style={styles.gameOver} />
       </View>
     )
-    */
-    return (
-      <View />
-    )
   }
 
   yearIncrement = value => (value === 12 ? this.state.year + 1 : this.state.year)
@@ -82,6 +52,30 @@ export default class Timer extends Component {
 
   componentDidMount () {
     this.myInterval = setInterval(() => {
+      if (this.props.pause) return
+      if (this.props.reset) {
+        this.setState({
+          months: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+            'Game Over'
+          ],
+          year: 2022,
+          month: 8,
+          dot: '/',
+          displayTimer: true
+        })
+      }
       if (this.state.year !== 2026) {
         if (this.state.displayTimer === true) {
           this.setState({
@@ -97,7 +91,7 @@ export default class Timer extends Component {
           displayTimer: false
         })
       }
-    }, 1000)
+    }, 2000)
   }
 }
 
@@ -118,7 +112,8 @@ const styles = StyleSheet.create({
 })
 
 Timer.propTypes = {
-  reset: PropTypes.bool
+  reset: PropTypes.bool,
+  pause: PropTypes.bool
 }
 
 export { Timer }

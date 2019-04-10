@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, View } from 'react-native'
 
 export default class Battery extends PureComponent {
   render () {
@@ -91,21 +91,6 @@ export default class Battery extends PureComponent {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute'
-  },
-  gameOver: {
-    fontSize: 20,
-    textAlign: 'center'
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#FFF',
-    fontSize: 20
-  }
-})
 
 Battery.propTypes = {
   battery: PropTypes.number

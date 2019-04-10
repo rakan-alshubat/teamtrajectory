@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, Dimensions, Text, View, Alert, Image, StyleSheet } from 'react-native'
+import { TouchableOpacity, Dimensions, Text, View, Image, StyleSheet } from 'react-native'
 import { Storage } from '../storage'
+import PropTypes from 'prop-types'
 
 let devHeight = Dimensions.get('window').height
 let devWidth = Dimensions.get('window').width
@@ -126,6 +127,10 @@ export default class EndScreen extends Component {
 
     )
   }
+}
+
+EndScreen.propTypes = {
+  navigation: PropTypes.object
 }
 
 const styles = StyleSheet.create({

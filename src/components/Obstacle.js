@@ -106,7 +106,7 @@ class Obstacle extends PureComponent {
       // Interpolate beginning and end values
       const spin = obs.spin.interpolate({
         inputRange: [0, 1],
-        outputRange: obs.rotation === 1 ? ['0deg', '720deg'] : ['720deg', '0deg']
+        outputRange: obs.rotation === 1 ? ['0deg', '2160deg'] : ['2160deg', '0deg']
       })
 
       if (obs.type) {

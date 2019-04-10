@@ -1,66 +1,88 @@
 import React, { Fragment, Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Modal,
   View,
   StyleSheet,
   TouchableOpacity,
   Image,
-  TouchableWithoutFeedback,
-  Alert
+  TouchableWithoutFeedback
 } from 'react-native'
+import { Storage } from '../storage'
 
 class PauseModal extends Component {
-    state = {
-      modalVisible: false
-    };
+  state = {
+    modalVisible: false
+  };
 
-    openModal = () => this.setState({ modalVisible: true });
-    closeModal = () => this.setState({ modalVisible: false });
+  openModal = () => {
+    Storage.setPaused('1')
+    this.setState({ modalVisible: true })
+  }
+  closeModal = () => {
+    Storage.setPaused('0')
+    this.setState({ modalVisible: false })
+  }
+  home = () => {
+    Storage.setGameOver('1')
+    this.props.navigation.navigate('Home')
+  }
 
-    render () {
-      return (
-        <Fragment>
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={this.closeModal}
+  render () {
+    return (
+      <Fragment>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={this.closeModal}
+        >
+          <TouchableOpacity
+            style={styles.exitTouch}
+            activeOpacity={1}
+            onPress={ () => { }}
           >
-            <TouchableOpacity
-              style={styles.exitTouch}
-              activeOpacity={1}
-              onPress={ () => { this.closeModal() }}
-            >
-              <View style={styles.overlay} />
-              <TouchableWithoutFeedback>
-                <View style={styles.modalContainer}>
+            <Image style={styles.overlay} source={require('../assets/mainScreenBackground.png')} />
+            <TouchableWithoutFeedback>
+              <View style={styles.modalContainer}>
 
-                  <TouchableOpacity style={styles.resumeBtn} onPress = { () => { Alert.alert('Hey') }}>
-                    <Image style={{ width: '100%', height: '100%' }} source={require('../assets/ResumeButton.png')} />
-                  </TouchableOpacity>
+                <TouchableOpacity style={styles.resumeBtn} onPress = { () => { this.closeModal() }}>
+                  <Image style={{ width: '100%', height: '100%' }} source={require('../assets/ResumeButton.png')} />
+                </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.homeBtn} onPress = { () => { this.props.navigation.navigate('Home') }}>
-                    <Image style={{ width: '100%', height: '100%' }} source={require('../assets/homeButton.png')} />
-                  </TouchableOpacity>
+                <TouchableOpacity style={styles.homeBtn} onPress = { () => { this.home() }}>
+                  <Image style={{ width: '100%', height: '100%' }} source={require('../assets/homeButton.png')} />
+                </TouchableOpacity>
 
-                </View>
-              </TouchableWithoutFeedback>
-            </TouchableOpacity>
-          </Modal>
-
-          <TouchableOpacity onPress={ () => { this.openModal() }}>
-            <Image source={require('../assets/pause-button.png')} />
+              </View>
+            </TouchableWithoutFeedback>
           </TouchableOpacity>
-        </Fragment>
-      )
-    }
+        </Modal>
+
+        <TouchableOpacity style={styles.pauseBtn} onPress={ () => { this.openModal() }}>
+          <Image style={{ width: '100%', height: '100%' }}source={require('../assets/pause-button.png')} />
+        </TouchableOpacity>
+      </Fragment>
+    )
+  }
+}
+
+PauseModal.propTypes = {
+  navigation: PropTypes.object
 }
 
 export default PauseModal
 
 const styles = StyleSheet.create({
+  pauseBtn: {
+    position: 'absolute',
+    top: '3.32%',
+    right: '3.32%',
+    width: '10.4%',
+    height: '4.8%'
+  },
   modalContainer: {
-    backgroundColor: '#301e41',
+    backgroundColor: 'transparent',
     borderRadius: 12,
     position: 'absolute',
     height: '22%',
@@ -70,9 +92,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     width: '100%',
-    height: '100%',
-    backgroundColor: '#c0c0c0',
-    opacity: 0.35
+    height: '100%'
   },
   exitTouch: {
     width: '100%',

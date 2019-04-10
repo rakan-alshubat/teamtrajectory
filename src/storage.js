@@ -181,6 +181,21 @@ class Storage {
       console.log(err)
     }
   }
+  static async setPaused (paused) {
+    try {
+      await AsyncStorage.setItem('paused', paused)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  static async getPaused () {
+    try {
+      const paused = await AsyncStorage.getItem('paused') || '0'
+      return paused
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 
 export { Storage }

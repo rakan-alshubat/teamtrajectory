@@ -8,27 +8,40 @@ setInterval(() => {
   spawnFactor = Math.random()
 }, 1000)
 
+setInterval(() => {
+  if (frames < 6) frames = 6
+  fps = (frames / 2)
+  frames = 0
+}, 500)
+
+setInterval(() => {
+  Storage.getPaused().then(val => {
+    if (paused === '1' && val === '0') resumed = true
+    paused = val
+  })
+}, 500)
+
 const maxDistance = 600
 const thrusterLevels = {
-  1: 0.075,
-  2: 0.115,
-  3: 0.1575,
-  4: 0.2,
-  5: 0.24
+  1: 0.01,
+  2: 0.015,
+  3: 0.022,
+  4: 0.027,
+  5: 0.035
 }
 const thrusterEffLevels = {
-  1: 2.2,
-  2: 2,
-  3: 1.7,
-  4: 1.5,
-  5: 1
+  1: 1.4,
+  2: 1.25,
+  3: 1.05,
+  4: 0.9,
+  5: 0.65
 }
 const solarPanelsLevels = {
-  1: 15000,
-  2: 14000,
-  3: 12000,
-  4: 11000,
-  5: 8000
+  1: 10000,
+  2: 9000,
+  3: 7500,
+  4: 6500,
+  5: 4500
 }
 const fuelLevels = {
   1: 25,
@@ -70,73 +83,114 @@ let velocity = 2
 
 let distanceTraveled = fuelLevels[fuelLevel]
 let speed = thrusterLevels[thrusterLevel]
-// speed = 0.24
 let coins = 0
+/* eslint-disable */
 let coinBoostTimeout = null
 let speedChangeTimeout = null
+/* eslint-enable */
 let isCoinBoost = false
 let gameOver = '0'
+let fps = 18
+let frames = 18
+let paused = '0'
+let resumed = false
 
 let solarPanelsInterval = null
 
 const Tick = (entities, { touches }) => {
-  // Storage.setHighScore('0')
+  // Count frame rate
+  ++frames
+  // Define entities
+  const background = entities['1']
   const ship = entities['2']
+  const obstacle = entities['3']
+  const battery = entities['4']
+  const fuel = entities['5']
+  const score = entities['6']
+  const timer = entities['7']
 
-  if (ship.paused || gameOver === '1') {
+  if (paused === '1' && gameOver !== '1') {
+    Storage.getGameOver().then(val => { gameOver = val })
+    timer.pause = true
+    obstacle.obstacles.map(obs => {
+      Animated.timing(obs.spin).stop()
+    })
+    return entities
+  }
+  // Go home from pause menu
+  if (paused === '1' && gameOver === '1') {
+    Storage.setCoins(String(lastCoins + coins)).then(x => {
+      Storage.setLastScore(String(Math.round(distanceTraveled))).then(x => {
+        if (distanceTraveled > highScore) {
+          highScore = distanceTraveled
+          Storage.setHighScore(String(Math.round(distanceTraveled)))
+        }
+        solarPanelsInterval = null
+        coins = 0
+        distanceTraveled = fuelLevels[fuelLevel]
+        ship.position = [WIDTH / 2, 180]
+        velocity = 2
+        obstacle.collectables = []
+        obstacle.obstacles = []
+        battery.battery = 80
+        fuel.fuelAmount = 95
+        timer.reset = true
+        Storage.setPaused('0')
+        paused = '0'
+        Storage.setGameOver('0')
+        gameOver = '0'
+        return entities
+      }).catch(err => {
+        console.log(err)
+        return entities
+      })
+    }).catch(err => {
+      console.log(err)
+      return entities
+    })
+  }
+  if (resumed) {
+    resumed = false
+    timer.pause = false
+    obstacle.obstacles.map(obs => {
+      Animated.timing(
+        obs.spin,
+        {
+          toValue: 1,
+          duration: 13500,
+          easing: Easing.linear
+        }
+      ).start()
+    })
+  }
+
+  if (gameOver === '1') {
     Storage.getGameOver().then(val => { gameOver = val })
     return entities
   }
 
-  // End game: reached end
-  if (distanceTraveled >= maxDistance) {
-    entities['3'].obstacles.map(obs => {
-      Animated.timing(obs.spin).stop()
-    })
-    Storage.setCoins(String(lastCoins + coins)).then(x => {
-      if (distanceTraveled > highScore) {
-        highScore = distanceTraveled
-        Storage.setHighScore(String(Math.round(distanceTraveled))).then(entities['1'].navigation.navigate('End'))
-      } else {
-        entities['1'].navigation.navigate('End')
-      }
-      distanceTraveled = fuelLevels[fuelLevel]
-      ship.position = [200, 160]
-      velocity = 2
-    })
-    return entities
-  }
-  // End game: velocity 0
-  if (velocity <= 0) {
-    /*
-    entities['3'].obstacles.map(obs => {
-      Animated.timing(obs.spin).stop()
-    })
-    */
-    console.log('gameover: ', gameOver)
+  // End game: velocity 0 or reached end
+  if (velocity <= 0 || distanceTraveled >= maxDistance) {
     gameOver = '1'
     Storage.setGameOver('1').then(x => {
-      console.log('set game over to 1')
       Storage.setCoins(String(lastCoins + coins)).then(x => {
-        console.log('score: ', distanceTraveled)
-        console.log('highscore: ', highScore)
         Storage.setLastScore(String(Math.round(distanceTraveled))).then(x => {
           if (distanceTraveled > highScore) {
             highScore = distanceTraveled
-            Storage.setHighScore(String(Math.round(distanceTraveled))).then(entities['1'].navigation.navigate('End'))
+            Storage.setHighScore(String(Math.round(distanceTraveled))).then(background.navigation.navigate('End'))
           } else {
-            entities['1'].navigation.navigate('End')
+            background.navigation.navigate('End')
           }
           solarPanelsInterval = null
           coins = 0
           distanceTraveled = fuelLevels[fuelLevel]
-          ship.position = [200, 160]
+          ship.position = [WIDTH / 2, 180]
           velocity = 2
-          entities['3'].collectables = []
-          entities['3'].obstacles = []
-          entities['5'].fuelAmount = 95
-          entities['4'].battery = 80
-          // entities['7'].reset = true
+          obstacle.collectables = []
+          obstacle.obstacles = []
+          battery.battery = 80
+          fuel.fuelAmount = 95
+          timer.reset = true
           return entities
         }).catch(err => {
           console.log(err)
@@ -151,10 +205,13 @@ const Tick = (entities, { touches }) => {
       return entities
     })
   }
+
   // Update distance traveled
-  distanceTraveled += (velocity / 18)
+  distanceTraveled += (velocity / fps)
   // Update coins
-  entities['6'].coins = lastCoins + coins
+  score.coins = lastCoins + coins
+  // Update timer
+  timer.reset = false
 
   const shipPositionOld = [ship.position[0], ship.position[1]]
   const moveTouch = touches.find(x => x.type === 'move')
@@ -166,9 +223,9 @@ const Tick = (entities, { touches }) => {
   if (pressTouch) {
     lastPosition = pressTouch.event.pageX
     if (pressTouch.event.pageX > (WIDTH / 2)) {
-      ship.position = [ship.position[0] + (speed * (WIDTH / 18)), ship.position[1]] // ((ship.upgrades.thrusterControl + 1) / 2)
+      ship.position = [ship.position[0] + (speed * (WIDTH / fps)), ship.position[1]]
     } else {
-      ship.position = [ship.position[0] - (speed * (WIDTH / 18)), ship.position[1]] // ((ship.upgrades.thrusterControl + 1) / 2)
+      ship.position = [ship.position[0] - (speed * (WIDTH / fps)), ship.position[1]]
     }
   }
 
@@ -181,50 +238,54 @@ const Tick = (entities, { touches }) => {
   } else if (moveTouch) {
     lastPosition = moveTouch.event.pageX
     if (moveTouch.event.pageX > (WIDTH / 2)) {
-      ship.position = [ship.position[0] + (speed * (WIDTH / 18)), ship.position[1]] // ((ship.upgrades.thrusterControl + 1) / 2)
+      ship.position = [ship.position[0] + (speed * (WIDTH / fps)), ship.position[1]]
     } else {
-      ship.position = [ship.position[0] - (speed * (WIDTH / 18)), ship.position[1]] // ((ship.upgrades.thrusterControl + 1) / 2)
+      ship.position = [ship.position[0] - (speed * (WIDTH / fps)), ship.position[1]]
     }
   } else if (isPressed) {
     if (isPressed) {
       if (lastPosition > (WIDTH / 2)) {
-        ship.position = [ship.position[0] + (speed * (WIDTH / 18)), ship.position[1]] // ((ship.upgrades.thrusterControl + 1) / 2)
+        ship.position = [ship.position[0] + (speed * (WIDTH / fps)), ship.position[1]]
       } else {
-        ship.position = [ship.position[0] - (speed * (WIDTH / 18)), ship.position[1]] // ((ship.upgrades.thrusterControl + 1) / 2)
+        ship.position = [ship.position[0] - (speed * (WIDTH / fps)), ship.position[1]]
       }
     }
   }
 
+  /* Battery */
+  // Battery regeneration
   if (!solarPanelsInterval) {
     solarPanelsInterval = setInterval(() => {
-      if (entities['4'].battery < 80) {
-        entities['4'].battery += 10
-        if (entities['4'].battery > 80) {
-          entities['4'].battery = 80
+      if (paused) return
+      if (battery.battery < 80) {
+        battery.battery += 10
+        if (battery.battery > 80) {
+          battery.battery = 80
         }
       }
     }, solarPanelsLevels[solarPanelsLevel])
   }
-  if (entities['4'].battery <= 0) {
+  // Do not move ship if out of battery
+  if (battery.battery <= 0) {
     ship.position = shipPositionOld
   }
+  // Consume battery from ship movement
   if (ship.position[0] !== shipPositionOld[0]) {
-    // console.log(entities['4'].battery)
-    entities['4'].battery -= 80 * (Math.abs(shipPositionOld[0] - ship.position[0]) / WIDTH) * thrusterEffLevels[thrusterEffLevel]
-    if (entities['4'].battery < 0) entities['4'].battery = 0
+    battery.battery -= 80 * (Math.abs(shipPositionOld[0] - ship.position[0]) / WIDTH) * thrusterEffLevels[thrusterEffLevel]
+    if (battery.battery < 0) battery.battery = 0
   }
 
   /* Spawn Entities */
   // Force ship to re-render
-  entities['2'].update = !entities['2'].update
+  ship.update = !ship.update
   // Force entities to re-render
-  entities['3'].update = !entities['3'].update
+  obstacle.update = !obstacle.update
   // Spawn collectables
   if (lastSpawnFactor !== spawnFactor && spawnFactor > 0.7) {
-    const numX2Coins = entities['3'].collectables.filter(obj => obj.type === 2).length
-    const numSpeedReducs = entities['3'].collectables.filter(obj => obj.type === 3).length
-    const numSpeedBoosts = entities['3'].collectables.filter(obj => obj.type === 4).length
-    const numStyleCoins = entities['3'].collectables.filter(obj => obj.type === 5).length
+    const numX2Coins = obstacle.collectables.filter(obj => obj.type === 2).length
+    const numSpeedReducs = obstacle.collectables.filter(obj => obj.type === 3).length
+    const numSpeedBoosts = obstacle.collectables.filter(obj => obj.type === 4).length
+    const numStyleCoins = obstacle.collectables.filter(obj => obj.type === 5).length
 
     let type = Math.floor(Math.random() * (10)) + 1
 
@@ -235,37 +296,37 @@ const Tick = (entities, { touches }) => {
     else if (type === 10 && numStyleCoins === 0) type = 5
     else type = 1
 
-    entities['3'].collectables.push({ type, position: [Math.random() * (WIDTH + 30), HEIGHT + 100], speed: 0.25, delete: false })
+    obstacle.collectables.push({ type, position: [Math.random() * (WIDTH + 30), HEIGHT + 100], speed: 0.02, delete: false })
   }
   // Spawn obstacles
-  if (entities['3'].obstacles.length < 3 && lastSpawnFactor !== spawnFactor && spawnFactor < 0.4) {
+  if (obstacle.obstacles.length < 3 && lastSpawnFactor !== spawnFactor && spawnFactor < 0.4) {
     const newObstacle = {
       type: (Math.floor(Math.random() * (12)) + 1),
       spin: new Animated.Value(0),
       rotation: Math.round(Math.random()),
       position: [Math.random() * (WIDTH + 30), HEIGHT + 100],
       endpoint: [Math.random() * (WIDTH + 30)],
-      speed: ((Math.random() * 0.3) + 0.5),
+      speed: ((Math.random() * 0.04) + 0.02),
       delete: false
     }
     Animated.timing(
       newObstacle.spin,
       {
         toValue: 1,
-        duration: 4500,
+        duration: 13500,
         easing: Easing.linear
       }
     ).start()
-    entities['3'].obstacles.push(newObstacle)
+    obstacle.obstacles.push(newObstacle)
   }
 
   /* Collectable Collisions */
-  let collectables = entities['3'].collectables
+  let collectables = obstacle.collectables
   if (collectables.length > 0) {
     collectables.map(obj => {
       if (obj.delete) return
 
-      obj.position[1] = obj.position[1] - (obj.speed * ((HEIGHT + 100) / 60))
+      obj.position[1] = obj.position[1] - (obj.speed * ((HEIGHT + 100) / fps))
 
       // Collectable-Ship collisions
       let dimensions = collectableDimensions[obj.type]
@@ -300,11 +361,11 @@ const Tick = (entities, { touches }) => {
         obj.delete = true
       }
     })
-    entities['3'].collectables = collectables.filter(obs => !obs.delete)
+    obstacle.collectables = collectables.filter(obs => !obs.delete)
   }
 
   /* Obstacle Collisions */
-  let obstacles = entities['3'].obstacles
+  let obstacles = obstacle.obstacles
   if (obstacles.length > 0) {
     obstacles.map(obs => {
       if (obs.delete) return
@@ -312,14 +373,14 @@ const Tick = (entities, { touches }) => {
       let dimensions = obstacleDimensions[obs.type]
       if (obs.spin >= 0.4 && obs.spin < 0.8) dimensions = [obstacleDimensions[obs.type][1][0]]
 
-      obs.position[0] = obs.position[0] + (obs.speed * ((obs.endpoint - obs.position[0]) / 60))
-      obs.position[1] = obs.position[1] - (obs.speed * ((HEIGHT + 100) / 60))
+      obs.position[0] = obs.position[0] + (obs.speed * ((obs.endpoint - obs.position[0]) / fps))
+      obs.position[1] = obs.position[1] - (obs.speed * ((HEIGHT + 100) / fps))
       // Obstacle-Ship collisions
       const matchH = Math.abs((ship.position[0] + (ship.dimensions[0] / 2)) - (obs.position[0] + (dimensions[0] / 2))) < (ship.dimensions[0] / 2)
       const matchV = Math.abs((ship.position[1] + (ship.dimensions[1] / 2)) - (obs.position[1] + (dimensions[1] / 2))) < (ship.dimensions[1] / 2)
       if (matchH && matchV) {
         obs.delete = true
-        entities['5'].fuelAmount -= 47
+        fuel.fuelAmount -= 47
         velocity -= 1
       }
       // Floor collisions
@@ -327,7 +388,7 @@ const Tick = (entities, { touches }) => {
         obs.delete = true
       }
     })
-    entities['3'].obstacles = obstacles.filter(obs => !obs.delete)
+    obstacle.obstacles = obstacles.filter(obs => !obs.delete)
   }
 
   /* Ship-Wall Collisions */
@@ -340,7 +401,6 @@ const Tick = (entities, { touches }) => {
   lastSpawnFactor = spawnFactor
 
   // Fuel
-  const fuel = entities['4']
   if (fuel.fuelAmount > 1) fuel.fuelAmount -= 0.1
   else fuel.fuelAmount = 80
 

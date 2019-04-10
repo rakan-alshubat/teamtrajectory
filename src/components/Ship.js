@@ -1,11 +1,22 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Animated, Easing } from 'react-native'
+import { Storage } from '../storage'
 
 let lastXPosition = null
 let lastMotion = 'still'
 
 class Ship extends PureComponent {
+  constructor (props) {
+    super(props)
+    this.shipLevel = 1
+  }
+
+  componentDidMount () {
+    let self = this
+    Storage.getShipLevel().then(level => { self.shipLevel = Number(level) })
+  }
+
   render () {
     const width = this.props.dimensions[0]
     const height = this.props.dimensions[1]
@@ -32,7 +43,7 @@ class Ship extends PureComponent {
           this.props.rotate,
           {
             toValue: 1,
-            duration: 250,
+            duration: 500,
             easing: Easing.linear
           }
         ).start()
@@ -54,7 +65,7 @@ class Ship extends PureComponent {
           this.props.rotate,
           {
             toValue: 0,
-            duration: 250,
+            duration: 500,
             easing: Easing.linear
           }
         ).start()
@@ -87,12 +98,28 @@ class Ship extends PureComponent {
 
     lastXPosition = x
 
-    return (
-      <Animated.Image
-        style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
-        source={require('../assets/lvl3-pink.png')}
-      />
-    )
+    if (this.shipLevel === 1) {
+      return (
+        <Animated.Image
+          style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+          source={require('../assets/lvl1-grey.png')}
+        />
+      )
+    } else if (this.shipLevel === 2) {
+      return (
+        <Animated.Image
+          style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+          source={require('../assets/lvl2-grey.png')}
+        />
+      )
+    } else {
+      return (
+        <Animated.Image
+          style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+          source={require('../assets/lvl3-grey.png')}
+        />
+      )
+    }
   }
 }
 
@@ -101,14 +128,7 @@ Ship.propTypes = {
   position: PropTypes.node,
   rotate: PropTypes.object,
   update: PropTypes.bool,
-  pause: PropTypes.bool,
-  shipLevel: PropTypes.string,
-  fuelLevel: PropTypes.string,
-  thrusterControlLevel: PropTypes.string,
-  thrusterEfficiencyLevel: PropTypes.string,
-  solarPanelsLevel: PropTypes.string,
-  batteryCapacityLevel: PropTypes.string,
-  coinBoostLevel: PropTypes.string
+  pause: PropTypes.bool
 }
 
 export { Ship }
