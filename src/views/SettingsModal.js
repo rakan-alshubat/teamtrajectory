@@ -42,15 +42,36 @@ class SettingsModal extends Component {
                   <View style={styles.textBox}>
                     <Text style={styles.description}>
                       {[
-                        'Team Trajectory!\n',
-                        'Development Team:\n'
+                        'Team Trajectory!\n\n',
+                        'Development Team:'
                       ]}
                     </Text>
                     <Text style={styles.description}>
                       {[
-                        'Fatima Alburaikan\t\t\t\t Yazeed Almazroa\n',
-                        'Rakan Alshubat\t\t\t\t Saeed Alteneiji\n',
-                        'Tristan Kimball\t\t\t\t Rudy Trigueros\n'
+                        'Fatima Alburaikan\t\t Yazeed Almazroa\n',
+                        'Rakan Alshubat\t\t Saeed Alteneiji\n',
+                        'Tristan Kimball\t\t\t Rudy Trigueros'
+                      ]}
+                    </Text>
+                    <Text style={styles.description}>
+                      {[
+                        '\nGraphic Designers:'
+                      ]}
+                    </Text>
+                    <Text style={styles.description}>
+                      {[
+                        'Stephanie Bookout\t\t Christina Webb\n'
+                      ]}
+                    </Text>
+                    <Text style={styles.description}>
+                      {[
+                        'Project Manager:\t\t Project Sponsor:\n',
+                        'Pyae Phyo Naing\t\tDr. Cassie Bowman\n\n'
+                      ]}
+                    </Text>
+                    <Text style={styles.description}>
+                      {[
+                        'Music by:\t\t Ryan Powell\n'
                       ]}
                     </Text>
                   </View>
@@ -85,7 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     width: 250,
-    top: HEIGHT * 0.125,
+    top: HEIGHT * 0.01,
     right: WIDTH * 0.1
   },
   description: {

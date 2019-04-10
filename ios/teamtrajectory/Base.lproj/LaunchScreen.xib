@@ -16,7 +16,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="nasa-logo" translatesAutoresizingMaskIntoConstraints="NO" id="7d5-TT-OTA">
-                    <rect key="frame" x="260" y="53" width="115" height="128"/>
+                    <rect key="frame" x="260" y="24" width="115" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </subviews>

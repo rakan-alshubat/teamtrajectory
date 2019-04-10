@@ -10,6 +10,7 @@ import { Score } from '../components/Score'
 import { Timer } from '../components/Timer'
 import { Tick } from '../systems'
 import ScrollingBackgroundImage from './ScrollingBackgroundImage'
+import Sound from 'react-native-sound'
 
 const entities = {
   1: { navigation: {}, renderer: <ScrollingBackgroundImage /> },
@@ -28,6 +29,16 @@ export default class Gameplay extends PureComponent {
 
   render () {
     entities['1'].navigation = this.props.navigation
+
+    let gameMusic = new Sound('game_music.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log(error)
+        return
+      }
+      gameMusic.play()
+      gameMusic.setNumberOfLoops(-1)
+      Sound.setCategory('Ambient')
+    })
 
     return (
       <GameEngine

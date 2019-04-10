@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Text, View, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { Text, View, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native'
 import FuelTankModal from './FuelTankModal'
 import ThrusterControlModal from './ThrusterControlModal'
 import ThrusterEfficiencyModal from './ThrusterEfficiencyModal'
 import SolarPanelsModal from './SolarPanelsModal'
 import BatteryCapacityModal from './BatteryCapacityModal'
 import CoinBoostModal from './CoinBoostModal'
-import Storage from '../storage'
+import { Storage } from '../storage'
 
 export default class UpScreen extends Component {
   static navigationOptions = {
@@ -17,12 +17,43 @@ export default class UpScreen extends Component {
     super()
     this.state =
     {
-      x: 1
+      shipLevel: '1',
+      totalCoins: '0000'
+    }
+    this.cost = {
+      1: 600,
+      2: 1750
     }
   }
 
   press = () => {
-    this.setState({ x: this.state.x + 1 })
+    let totalCoins = Number(this.state.totalCoins)
+
+    if (totalCoins >= this.cost[this.state.shipLevel]) {
+      const shipLevel = `${(Number(this.state.shipLevel) + 1)}`
+
+      totalCoins = `${totalCoins - this.cost[this.state.shipLevel]}`
+      totalCoins = totalCoins.length > 3 ? totalCoins : totalCoins.length > 2 ? '0' + totalCoins : totalCoins.length > 1 ? '00' + totalCoins : '000' + totalCoins
+
+      this.setState({ shipLevel, totalCoins })
+      Storage.setShipLevel(shipLevel)
+      Storage.setCoins(totalCoins)
+    }
+  }
+
+  componentDidMount () {
+    let self = this
+
+    Storage.getCoins().then(totalCoins => {
+      totalCoins = totalCoins.length > 3 ? totalCoins : totalCoins.length > 2 ? '0' + totalCoins : totalCoins.length > 1 ? '00' + totalCoins : '000' + totalCoins
+      Storage.getShipLevel().then(shipLevel => {
+        self.setState({ shipLevel, totalCoins })
+      }).catch(err => {
+        console.log(err)
+      })
+    }).catch(err => {
+      console.log(err)
+    })
   }
 
   render () {
@@ -31,27 +62,26 @@ export default class UpScreen extends Component {
     let upgradeCoin
     let upgradable
 
-    if (this.state.x === 1) {
-      upgradeLevel = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade1.png')}/>
+    if (this.state.shipLevel === '1') {
+      upgradeLevel = <Image style={{ width: '85%', height: '80%', top: '2%' }} source={require('../assets/Upgrade1.png')}/>
       upgradeCost = <Text style={styles.shipCostText}> 0600 </Text>
       upgradeCoin = <Image style={styles.shipCostCoin} source={require('../assets/coin.png')}/>
-      upgradable = <TouchableOpacity style={{ width: '36.2667%', height: '55%', top: '15%', left: '55%' }} onPress={ () => this.press() }>
+      upgradable = <TouchableOpacity style={{ width: '30%', height: '30%', top: '20%', left: '60%' }} onPress={ () => this.press() }>
         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/upgrade-ship-button.png')}/>
       </TouchableOpacity>
-    } else if (this.state.x === 2) {
-      upgradeLevel = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade2.png')}/>
+    } else if (this.state.shipLevel === '2') {
+      upgradeLevel = <Image style={{ width: '85%', height: '80%', top: '2%' }} source={require('../assets/Upgrade2.png')}/>
       upgradeCost = <Text style={styles.shipCostText}> 1750 </Text>
       upgradeCoin = <Image style={styles.shipCostCoin} source={require('../assets/coin.png')}/>
-      upgradable = <TouchableOpacity style={{ width: '36.2667%', height: '55%', top: '15%', left: '55%' }} onPress={ () => this.press() }>
+      upgradable = <TouchableOpacity style={{ width: '30%', height: '30%', top: '20%', left: '60%' }} onPress={ () => this.press() }>
         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/upgrade-ship-button.png')}/>
       </TouchableOpacity>
     } else {
-      upgradeLevel = <Image style={{ width: '80%', height: '80%', top: '2%' }} source={require('../assets/Upgrade3.png')}/>
+      upgradeLevel = <Image style={{ width: '85%', height: '80%', top: '2%' }} source={require('../assets/Upgrade3.png')}/>
       upgradable = <TouchableWithoutFeedback>
-        <Image style={{ width: '36.2667%', height: '55%', top: '15%', left: '55%', backgroundColor: 'gray', opacity: 0.2, borderRadius: 20 }} source={require('../assets/upgrade-ship-button.png')}/>
+        <Image style={{ width: '30%', height: '30%', top: '20%', left: '60%', backgroundColor: 'gray', opacity: 0.2, borderRadius: 20 }} source={require('../assets/upgrade-ship-button.png')}/>
       </TouchableWithoutFeedback>
     }
-
     return (
 
       <View style={{ flex: 1 }}>
@@ -88,10 +118,10 @@ export default class UpScreen extends Component {
 
         <Image style={styles.totalCoins} source={require('../assets/coin.png')}/>
 
-        <Text style={styles.totalCoinsText}> 5000 </Text>
+        <Text style={styles.totalCoinsText}> { this.state.totalCoins } </Text>
 
         <TouchableOpacity style={styles.Xbutton} onPress={ () => this.props.navigation.navigate('Home')}>
-          <Image source={require('../assets/backX.png')}/>
+          <Image style={{ width: '100%', height: '100%' }} source={require('../assets/backX.png')}/>
         </TouchableOpacity>
 
         <Image style={styles.upgradeTitle} source={require('../assets/upgrade-title.png')}/>
@@ -112,30 +142,30 @@ export default class UpScreen extends Component {
 const styles = StyleSheet.create({
   totalCoins: {
     height: '4.3%',
-    width: '7.7867%',
+    width: '8.2%',
     position: 'absolute',
-    top: '1.576%',
+    top: '1.7%',
     left: '8.133%'
   },
   totalCoinsText: {
     position: 'absolute',
-    top: '2%',
+    top: '3%',
     left: '17.6%',
     color: 'gold'
   },
   upgradeTitle: {
-    width: '25.6267%',
-    height: '4.3%',
+    width: '31.4%',
+    height: '4.5%',
     position: 'absolute',
-    top: '2.0567%',
-    left: '37.0667%'
+    top: '2.5%',
+    left: '36%'
   },
   Xbutton: {
     position: 'absolute',
-    top: '2.39%',
+    top: '3%',
     left: '86.88%',
-    height: '1.922%',
-    width: '4.16%'
+    height: '2.5%',
+    width: '4.5%'
   },
   upgradeShipButton: {
     height: '15%',
@@ -148,23 +178,17 @@ const styles = StyleSheet.create({
   },
   shipCostCoin: {
     position: 'absolute',
-    top: '17.52%',
-    left: '66.53%',
+    top: '15.5%',
+    left: '63%',
     height: '3.2%',
-    width: '5.28%'
+    width: '6.4%'
   },
   shipCostText: {
     position: 'absolute',
-    top: '17.71%',
-    left: '72.94%',
-    color: 'gold'
-  },
-  shipLevels: {
-    position: 'absolute',
-    top: '10.45%',
-    left: '6.027%',
-    height: '16.91%',
-    width: '30.49%'
+    top: '16%',
+    left: '70%',
+    color: 'gold',
+    fontSize: 16
   }
 })
 

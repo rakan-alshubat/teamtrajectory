@@ -70,7 +70,7 @@ let velocity = 2
 
 let distanceTraveled = fuelLevels[fuelLevel]
 let speed = thrusterLevels[thrusterLevel]
-//speed = 0.24
+// speed = 0.24
 let coins = 0
 let coinBoostTimeout = null
 let speedChangeTimeout = null
@@ -80,7 +80,7 @@ let gameOver = '0'
 let solarPanelsInterval = null
 
 const Tick = (entities, { touches }) => {
-  //Storage.setHighScore('0')
+  // Storage.setHighScore('0')
   const ship = entities['2']
 
   if (ship.paused || gameOver === '1') {
@@ -136,7 +136,7 @@ const Tick = (entities, { touches }) => {
           entities['3'].obstacles = []
           entities['5'].fuelAmount = 95
           entities['4'].battery = 80
-          //entities['7'].reset = true
+          // entities['7'].reset = true
           return entities
         }).catch(err => {
           console.log(err)
@@ -209,7 +209,7 @@ const Tick = (entities, { touches }) => {
     ship.position = shipPositionOld
   }
   if (ship.position[0] !== shipPositionOld[0]) {
-    //console.log(entities['4'].battery)
+    // console.log(entities['4'].battery)
     entities['4'].battery -= 80 * (Math.abs(shipPositionOld[0] - ship.position[0]) / WIDTH) * thrusterEffLevels[thrusterEffLevel]
     if (entities['4'].battery < 0) entities['4'].battery = 0
   }

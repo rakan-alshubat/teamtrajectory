@@ -4,7 +4,6 @@ import { Storage } from '../storage'
 
 let devHeight = Dimensions.get('window').height
 let devWidth = Dimensions.get('window').width
-const shipMessage = 'This upgrade will replace your ship with a more powerful one.'
 
 export default class EndScreen extends Component {
   static navigationOptions = {
@@ -15,8 +14,8 @@ export default class EndScreen extends Component {
     super(props)
     this.state = {
       coins: '0000',
-      score: '000M KM',
-      highScore: '000M KM'
+      score: '000m km',
+      highScore: '000m km'
     }
   }
 
@@ -30,9 +29,9 @@ export default class EndScreen extends Component {
     Storage.getCoins().then(totalCoins => {
       coins = totalCoins.length === 4 ? totalCoins : totalCoins.length === 3 ? '0' + totalCoins : totalCoins.length === 2 ? '00' + totalCoins : '000' + totalCoins
       Storage.getLastScore().then(lastScore => {
-        score = lastScore.length === 3 ? lastScore + 'M KM' : lastScore.length === 2 ? '0' + lastScore + 'M KM' : '00' + lastScore + 'M KM'
+        score = lastScore.length === 3 ? lastScore + 'm km' : lastScore.length === 2 ? '0' + lastScore + 'm km' : '00' + lastScore + 'm km'
         Storage.getHighScore().then(hScore => {
-          highScore = hScore.length === 3 ? hScore + 'M KM' : hScore.length === 2 ? '0' + hScore + 'M KM' : '00' + hScore + 'M KM'
+          highScore = hScore.length === 3 ? hScore + 'm km' : hScore.length === 2 ? '0' + hScore + 'm km' : '00' + hScore + 'm km'
           self.setState({
             coins,
             score,
@@ -56,7 +55,7 @@ export default class EndScreen extends Component {
       <View>
         <Image
           source = {require('../assets/mainScreenBackground.png')}
-          style = {{ width: devWidth, height: devHeight }}
+          style = {{ width: '100%', height: '100%' }}
         >
         </Image>
 
@@ -135,15 +134,13 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     fontSize: 37,
-    textAlign: 'center',
-    fontFamily: 'TradeGothicLTStd'
+    textAlign: 'center'
   },
   titleText2: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
-    textAlign: 'center',
-    fontFamily: 'TradeGothicLTStd'
+    textAlign: 'center'
   },
   titleText3: {
     color: 'white',
@@ -160,10 +157,9 @@ const styles = StyleSheet.create({
 
   },
   titleBox: {
-    flex: 1,
     position: 'absolute',
-    width: devWidth * 0.77,
-    height: devHeight * 0.08,
+    width: '77%',
+    height: '8%',
     backgroundColor: '#ffffff',
     marginHorizontal: '11%',
     marginVertical: '32%',
@@ -171,10 +167,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15
   },
   titleBox2: {
-    flex: 1,
     position: 'absolute',
-    width: devWidth * 0.77,
-    height: devHeight * 0.53,
+    width: '77%',
+    height: '53%',
     backgroundColor: '#301e41',
     marginHorizontal: '11%',
     marginVertical: '38%',
@@ -183,19 +178,17 @@ const styles = StyleSheet.create({
 
   },
   goldBox: {
-    flex: 1,
     position: 'absolute',
-    width: devWidth * 0.18,
-    height: devHeight * 0.03,
+    width: '18%',
+    height: '3%',
     backgroundColor: '#0a0c21',
     marginHorizontal: '38%',
     marginVertical: '70%'
   },
   scoreBox: {
-    flex: 1,
     position: 'absolute',
-    width: devWidth * 0.18,
-    height: devHeight * 0.03,
+    width: '18%',
+    height: '8%',
     backgroundColor: '#0a0c21',
     marginHorizontal: '38%',
     marginVertical: '24%'
@@ -203,14 +196,13 @@ const styles = StyleSheet.create({
   scoreBox2: {
     flex: 1,
     position: 'absolute',
-    width: devWidth * 0.18,
-    height: devHeight * 0.03,
+    width: '18%',
+    height: '3%',
     backgroundColor: '#0a0c21',
     marginHorizontal: '38%',
     marginVertical: '47%'
   },
   lineBox: {
-    flex: 1,
     position: 'absolute',
     width: devWidth * 0.38,
     height: devHeight * 0.015,
@@ -219,7 +211,6 @@ const styles = StyleSheet.create({
     marginVertical: '34%'
   },
   lineBox2: {
-    flex: 1,
     position: 'absolute',
     width: devWidth * 0.38,
     height: devHeight * 0.025,
