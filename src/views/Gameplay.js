@@ -18,7 +18,7 @@ const { width: WIDTH } = Dimensions.get('window')
 
 const entities = {
   1: { navigation: {}, renderer: <ScrollingBackgroundImage /> },
-  2: { dimensions: [32, 84], position: [WIDTH / 2, 180], rotate: new Animated.Value(0.5), renderer: <Ship /> },
+  2: { color: 1, dimensions: [32, 84], position: [WIDTH / 2, 180], rotate: new Animated.Value(0.5), renderer: <Ship /> },
   3: { update: true, obstacles: [], collectables: [], renderer: <Obstacle /> },
   4: { battery: 80, renderer: <Battery /> },
   5: { fuelAmount: 95, renderer: <Fuel /> },

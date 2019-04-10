@@ -352,7 +352,7 @@ const Tick = (entities, { touches }) => {
             speed = thrusterLevels[thrusterLevel]
           }, 10000)
         } else if (obj.type === 5) {
-          // Change ship color
+          ship.color = (Math.floor(Math.random() * 6) + 1)
         }
         obj.delete = true
       }
@@ -399,10 +399,6 @@ const Tick = (entities, { touches }) => {
   }
 
   lastSpawnFactor = spawnFactor
-
-  // Fuel
-  if (fuel.fuelAmount > 1) fuel.fuelAmount -= 0.1
-  else fuel.fuelAmount = 80
 
   return entities
 }

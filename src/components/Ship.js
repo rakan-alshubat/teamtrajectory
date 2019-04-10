@@ -99,26 +99,182 @@ class Ship extends PureComponent {
     lastXPosition = x
 
     if (this.shipLevel === 1) {
-      return (
-        <Animated.Image
-          style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
-          source={require('../assets/lvl1-grey.png')}
-        />
-      )
+      switch (this.props.color) {
+        case 1:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl1-grey.png')}
+            />
+          )
+        case 2:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl1-light-purple.png')}
+            />
+          )
+        case 3:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl1-orange.png')}
+            />
+          )
+        case 4:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl1-pink.png')}
+            />
+          )
+        case 5:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl1-purple.png')}
+            />
+          )
+        case 6:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl1-yellow.png')}
+            />
+          )
+        case 7:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl1-dark-purple.png')}
+            />
+          )
+        default:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl1-grey.png')}
+            />
+          )
+      }
     } else if (this.shipLevel === 2) {
-      return (
-        <Animated.Image
-          style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
-          source={require('../assets/lvl2-grey.png')}
-        />
-      )
+      switch (this.props.color) {
+        case 1:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl2-grey.png')}
+            />
+          )
+        case 2:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl2-light-purple.png')}
+            />
+          )
+        case 3:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl2-orange.png')}
+            />
+          )
+        case 4:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl2-pink.png')}
+            />
+          )
+        case 5:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl2-purple.png')}
+            />
+          )
+        case 6:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl2-yellow.png')}
+            />
+          )
+        case 7:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl2-dark-purple.png')}
+            />
+          )
+        default:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl2-grey.png')}
+            />
+          )
+      }
     } else {
-      return (
-        <Animated.Image
-          style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
-          source={require('../assets/lvl3-grey.png')}
-        />
-      )
+      switch (this.props.color) {
+        case 1:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl3-grey.png')}
+            />
+          )
+        case 2:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl3-light-purple.png')}
+            />
+          )
+        case 3:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl3-orange.png')}
+            />
+          )
+        case 4:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl3-pink.png')}
+            />
+          )
+        case 5:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl3-purple.png')}
+            />
+          )
+        case 6:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl3-yellow.png')}
+            />
+          )
+        case 7:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl3-dark-purple.png')}
+            />
+          )
+        default:
+          return (
+            <Animated.Image
+              style={{ height: height, width: width, left: x, bottom: y, transform: [{ rotate }] }}
+              source={require('../assets/lvl3-grey.png')}
+            />
+          )
+      }
     }
   }
 }
@@ -128,7 +284,8 @@ Ship.propTypes = {
   position: PropTypes.node,
   rotate: PropTypes.object,
   update: PropTypes.bool,
-  pause: PropTypes.bool
+  pause: PropTypes.bool,
+  color: PropTypes.number
 }
 
 export { Ship }

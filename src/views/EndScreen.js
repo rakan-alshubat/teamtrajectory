@@ -21,7 +21,6 @@ export default class EndScreen extends Component {
   }
 
   componentDidMount () {
-    console.log('END SCREEN MOUNTED')
     let self = this
     let coins = this.state.coins
     let score = this.state.score

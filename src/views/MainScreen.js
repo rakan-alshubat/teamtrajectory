@@ -24,17 +24,6 @@ export default class MainScreen extends React.Component {
       Sound.setCategory('Ambient')
     })
 
-    //hard reset all levels for testing purposes
-    /*
-    Storage.setShipLevel('1')
-    Storage.setFuelLevel('1')
-    Storage.setCoinBoostLevel('1')
-    Storage.setThrusterEfficiencyLevel('1')
-    Storage.setThrusterControlLevel('1')
-    Storage.setSolarPanelsLevel('1')
-    Storage.setBatteryCapacityLevel('1')
-
-    */
     return (
       <ImageBackground source={require('../assets/mainScreenBackground.png')} style={{ width: '100%', height: '100%' }}>
         <StatusBar hidden = {true} />
@@ -50,7 +39,7 @@ export default class MainScreen extends React.Component {
           <Image style={styles.nasaLogo} source={require('../assets/nasa-insignia.png')}/>
         </View>
         <View style={styles.playButtonBox}>
-          <TouchableOpacity onPress={ () => this.props.navigation.navigate('Game') && menuMusic.stop()}>
+          <TouchableOpacity onPress={ () => { this.props.navigation.navigate('Game') && menuMusic.stop() }}>
             <Image style={styles.playButton} source={require('../assets/play-button.png')} />
           </TouchableOpacity>
         </View>

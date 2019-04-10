@@ -21,7 +21,7 @@ const obstacleDimensions = {
 const collectableDimensions = {
   1: [30, 30],
   2: [22, 22],
-  3: [30, 30],
+  3: [20, 30],
   4: [30, 30],
   5: [30, 30]
 }

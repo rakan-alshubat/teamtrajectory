@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 export default class Fuel extends Component {
   render () {
     const width = this.props.fuelAmount
-    // const height = 20
-    // bot = 145
     return (
       <View style={{ position: 'absolute', height: 12.4, width: 101, top: '3.69%', left: '7.47%' }}>
         <Image
